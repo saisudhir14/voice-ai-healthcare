@@ -1,0 +1,93 @@
+<section class="conversation panel" aria-label="Conversation">
+  <header class="panel-heading">
+    <div><h2>Conversation</h2><p>{{ workspace.session() ? 'Maya with ' + displayName(workspace.patient()) : 'A space to listen. A plan to help.' }}</p></div>
+    <span class="transcript-tag"><i class="status-dot" [class.connected]="workspace.isActive()"></i>{{ workspace.isActive() ? 'Live' : 'Transcript' }}</span>
+  </header>
+  @if (workspace.state().mock) {
+    <div class="replay-banner"><app-icon name="info" /> Scripted demo · No call or message is sent</div>
+  }
+  @if (workspace.state().error; as error) {
+    <div class="error-banner" role="alert"><span>{{ error }}</span><button mat-icon-button aria-label="Dismiss error" (click)="workspace.dismissError()"><app-icon name="close" /></button></div>
+  }
+  <div class="conversation-scroll" #list (scroll)="onScroll()" tabindex="0" aria-label="Conversation history">
+    @if (!workspace.session()) {
+      <div class="conversation-empty">
+        <div class="conversation-symbol"><app-icon name="message" /><span class="mini-spark">✦</span></div>
+        <h3>Good care starts<br>with a conversation.</h3>
+        <p>Choose a patient and reach out with Maya.<br>The conversation and care actions appear here, live.</p>
+      </div>
+      @if (workspace.patient(); as patient) {
+        <article class="briefing">
+          <header><span class="briefing-icon"><app-icon name="file" /></span><div><h3>Before reaching {{ firstName(patient) }}</h3><p>A little context makes a difference.</p></div></header>
+          <ul>@for (point of points(); track $index) { <li><span></span>{{ point }}</li> }</ul>
+          <footer><app-icon name="shield" /> Prepared from the patient chart</footer>
+        </article>
+      }
+    } @else {
+      <ol class="transcript" aria-live="polite" aria-relevant="additions text">
+        @for (row of rows(); track row.item.id) {
+          @let item = row.item;
+          @if (item.kind === 'turn') {
+            <li class="turn" [class.patient-turn]="item.role === 'patient'" animate.enter="turn-enter">
+              <div class="turn-meta"><strong>{{ item.role === 'agent' ? 'Maya' : firstName(workspace.patient()) }}</strong>
+                <span>{{ item.ts | date:'shortTime' }}</span>
+                @if (item.typed) { <span>Typed</span> }
+                @if (item.latency; as latency) {
+                  <span class="latency" [matTooltip]="'Speech recognition: ' + formatMs(latency.stt_ms) + ' · Reasoning: ' + formatMs(latency.llm_ms) + ' · Voice: ' + formatMs(latency.tts_ms)">
+                    {{ formatMs(latency.total_ms) }}
+                  </span>
+                }
+              </div>
+              <div class="bubble" [class.pending]="item.local">{{ item.text }} @if (item.interim) { <em>{{ item.interim }}</em> }</div>
+            </li>
+          } @else if (item.kind === 'tool') {
+            @if (row.tool; as tool) {
+              <li class="tool-event" animate.enter="turn-enter">
+                <details>
+                  <summary [class]="'tool-summary ' + tool.tone"><span class="tool-icon"><app-icon [name]="tool.icon" /></span>
+                    <span><strong>{{ tool.label }}</strong>@if (tool.detail) { <span class="tool-detail">{{ tool.detail }}</span> }</span>
+                    <app-icon name="chevron" />
+                  </summary>
+                  <div class="tool-details"><p>Action details</p><pre>{{ item.name }}
+{{ item.args | json }}
+{{ item.result | json }}</pre></div>
+                </details>
+              </li>
+            }
+          } @else {
+            <li class="session-note"><span>{{ item.text }}</span><time>{{ item.ts | date:'shortTime' }}</time></li>
+          }
+        }
+        @if (workspace.session()?.status === 'connecting') {
+          <li class="session-note" role="status">Connecting to Maya…</li>
+        }
+        @if (workspace.session()?.status === 'ended' && !workspace.state().summary && workspace.state().items.length > 2) {
+          <li class="session-note" role="status">Preparing the outreach note…</li>
+        }
+        @if (workspace.state().summary; as summary) {
+          <li class="summary-card" animate.enter="turn-enter">
+            <header><app-icon name="file" /><h3>CWOW outreach note</h3><button mat-icon-button aria-label="Copy outreach note" (click)="copyNote()"><app-icon name="copy" /></button></header>
+            <p>{{ summary }}</p>
+            <footer>Drafted by Maya · For {{ workspace.patient()?.facility?.reschedule_lead || 'the reschedule lead' }} to review</footer>
+          </li>
+        }
+      </ol>
+    }
+  </div>
+  @if (!isFollowing() && workspace.session()) {
+    <button mat-stroked-button class="follow-button" (click)="follow()">Jump to latest</button>
+  }
+  @if (workspace.isActive()) {
+    <form class="composer" (ngSubmit)="send()">
+      <label for="reply">Reply as {{ firstName(workspace.patient()) }}</label>
+      <div class="composer-input">
+        <input matInput #composer id="reply" name="reply" [ngModel]="draft()" (ngModelChange)="draft.set($event)" autocomplete="off"
+          placeholder="Type a reply…" [disabled]="!canSend()" />
+        <button mat-icon-button type="submit" aria-label="Send reply" [disabled]="!canSend() || !draft().trim()"><app-icon name="send" /></button>
+      </div>
+      <p>{{ workspace.session()?.channel === 'sms' ? 'Replies here reach Maya. Use Linphone to text from your phone.' : 'Type here at any time. The conversation carries on.' }}</p>
+    </form>
+  }
+  <footer class="conversation-footer"><span><app-icon name="shield" /> {{ workspace.session() ? stats().tools + ' care actions' : 'Identity first. Care always.' }}</span>
+    <span>{{ stats().average !== undefined ? formatMs(stats().average) + ' avg response' : 'Maya · AI teammate' }}</span></footer>
+</section>

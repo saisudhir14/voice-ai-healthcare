@@ -1,0 +1,1613 @@
+{
+  "facility": {
+    "name": "Riverside Dialysis",
+    "code": "FAC-03436",
+    "address": "2100 Riverside Drive, Nashville, TN 37206",
+    "phone": "(615) 555-0140",
+    "nephrologist": "Dr. Priya Shah",
+    "charge_nurse": "Keisha Brooks, RN",
+    "social_worker": "Marcus Vance, MSW",
+    "facility_admin": "Elena Ortiz, FA",
+    "reschedule_lead": "Tanya Cole, AA",
+    "dietitian": "Lauren Pike, RD",
+    "timezone": "America/Chicago",
+    "today": "2026-10-27",
+    "today_weekday": "Tuesday",
+    "region": "Middle Tennessee",
+    "synthetic": true
+  },
+  "sister_facilities": [
+    {
+      "name": "Hermitage Dialysis",
+      "code": "FAC-03512",
+      "address": "4220 Lebanon Pike, Hermitage, TN 37076",
+      "phone": "(615) 555-0177",
+      "distance_note": "About 12 minutes east of Riverside. Same nephrology group; guest-treatment orders transfer in CWOW.",
+      "charge_nurse": "Andre Mitchell, RN"
+    }
+  ],
+  "mtx_reason_codes": [
+    {
+      "code": "TR-BROKER",
+      "category": "Transportation",
+      "label": "Transportation - Broker delay / no-show",
+      "owner": "MSW",
+      "next_action": "MSW: arrange SafeRide/broker escalation"
+    },
+    {
+      "code": "TR-NORIDE",
+      "category": "Transportation",
+      "label": "Transportation - No ride available",
+      "owner": "MSW",
+      "next_action": "MSW: arrange SafeRide; screen for NEMT benefit enrollment"
+    },
+    {
+      "code": "TR-COST",
+      "category": "Transportation",
+      "label": "Transportation - Cost / cannot afford",
+      "owner": "MSW",
+      "next_action": "MSW: screen for transport assistance (fuel card / NEMT eligibility)"
+    },
+    {
+      "code": "TR-VEHICLE",
+      "category": "Transportation",
+      "label": "Transportation - Vehicle breakdown",
+      "owner": "MSW",
+      "next_action": "MSW: one-time SafeRide for makeup run"
+    },
+    {
+      "code": "TR-WEATHER",
+      "category": "Transportation",
+      "label": "Transportation - Weather",
+      "owner": "AA",
+      "next_action": "AA: rebook next open chair; FA: confirm weather closure plan"
+    },
+    {
+      "code": "SC-WORK",
+      "category": "Schedule conflict",
+      "label": "Schedule conflict - Work",
+      "owner": "AA",
+      "next_action": "AA: offer permanent shift change in ScheduleHub (3rd shift / evening)"
+    },
+    {
+      "code": "SC-CAREGIVING",
+      "category": "Schedule conflict",
+      "label": "Schedule conflict - Caregiving",
+      "owner": "MSW",
+      "next_action": "MSW: caregiver respite / adult day resources; AA: flexible or sister-clinic chair"
+    },
+    {
+      "code": "SC-TRAVEL",
+      "category": "Schedule conflict",
+      "label": "Schedule conflict - Travel",
+      "owner": "AA",
+      "next_action": "AA: arrange guest (transient) treatment at destination clinic"
+    },
+    {
+      "code": "SC-FAMILY",
+      "category": "Schedule conflict",
+      "label": "Schedule conflict - Family emergency",
+      "owner": "AA",
+      "next_action": "AA: book makeup chair; MSW check-in call"
+    },
+    {
+      "code": "MD-OUTPT",
+      "category": "Medical",
+      "label": "Medical - Outpatient appointment",
+      "owner": "AA",
+      "next_action": "AA: coordinate makeup around appointment; RN review if procedure"
+    },
+    {
+      "code": "MD-ER",
+      "category": "Medical",
+      "label": "Medical - ER visit",
+      "owner": "RN",
+      "next_action": "RN: obtain ER records; review labs before next run"
+    },
+    {
+      "code": "MD-ADMIT",
+      "category": "Medical",
+      "label": "Medical - Admitted to hospital",
+      "owner": "RN",
+      "next_action": "RN: mark hospitalized in CWOW, hold chair, notify NEPH; plan post-discharge return"
+    },
+    {
+      "code": "MD-ACCESS",
+      "category": "Medical",
+      "label": "Medical - Access dysfunction",
+      "owner": "RN",
+      "next_action": "RN: access assessment; vascular access coordinator referral"
+    },
+    {
+      "code": "PR-UNWELL",
+      "category": "Patient refusal",
+      "label": "Patient refusal - Felt unwell",
+      "owner": "RN",
+      "next_action": "RN: symptom triage call before makeup run"
+    },
+    {
+      "code": "PR-FATIGUE",
+      "category": "Patient refusal",
+      "label": "Patient refusal - Treatment fatigue",
+      "owner": "NEPH",
+      "next_action": "RN + NEPH: IDT review; discuss shift/modality options; MSW PHQ-9 screen"
+    },
+    {
+      "code": "PR-CHOICE",
+      "category": "Patient refusal",
+      "label": "Patient refusal - Personal choice",
+      "owner": "RN",
+      "next_action": "RN: document informed refusal; notify NEPH; MSW follow-up"
+    },
+    {
+      "code": "UR-UNREACH",
+      "category": "Unreachable",
+      "label": "Unreachable - No contact",
+      "owner": "AA",
+      "next_action": "AA: second attempt in 2 hrs, then emergency contact; RN welfare check if 2+ misses"
+    },
+    {
+      "code": "OT-OTHER",
+      "category": "Other",
+      "label": "Other - See note",
+      "owner": "AA",
+      "next_action": "AA: review outreach note and recode"
+    }
+  ],
+  "barrier_code_map": {
+    "transport": "TR-BROKER",
+    "illness": "PR-UNWELL",
+    "life": "SC-FAMILY",
+    "declined": "PR-CHOICE",
+    "hospital": "MD-ADMIT",
+    "other": "OT-OTHER"
+  },
+  "open_chairs": [
+    {
+      "id": "slot-today-1400",
+      "facility": "Riverside Dialysis",
+      "facility_code": "FAC-03436",
+      "sister_clinic": false,
+      "date": "2026-10-27",
+      "date_label": "today",
+      "spoken": "today at 2:00 in the afternoon",
+      "weekday": "Tuesday",
+      "time": "2:00 PM",
+      "shift": "2nd Shift",
+      "chair": "Chair 4",
+      "pod": "Pod A",
+      "available": true
+    },
+    {
+      "id": "slot-wed-1000",
+      "facility": "Riverside Dialysis",
+      "facility_code": "FAC-03436",
+      "sister_clinic": false,
+      "date": "2026-10-28",
+      "date_label": "tomorrow",
+      "spoken": "tomorrow at 10:00 in the morning",
+      "weekday": "Wednesday",
+      "time": "10:00 AM",
+      "shift": "1st Shift",
+      "chair": "Chair 9",
+      "pod": "Pod B",
+      "available": true
+    },
+    {
+      "id": "slot-wed-hermitage-1330",
+      "facility": "Hermitage Dialysis",
+      "facility_code": "FAC-03512",
+      "facility_address": "4220 Lebanon Pike, Hermitage, TN 37076",
+      "sister_clinic": true,
+      "date": "2026-10-28",
+      "date_label": "tomorrow",
+      "spoken": "tomorrow at 1:30 in the afternoon at our Hermitage clinic",
+      "weekday": "Wednesday",
+      "time": "1:30 PM",
+      "shift": "2nd Shift",
+      "chair": "Chair 5",
+      "pod": "Pod A",
+      "available": true
+    },
+    {
+      "id": "slot-thu-0600",
+      "facility": "Riverside Dialysis",
+      "facility_code": "FAC-03436",
+      "sister_clinic": false,
+      "date": "2026-10-29",
+      "date_label": "Thursday",
+      "spoken": "Thursday at 6:00 in the morning",
+      "weekday": "Thursday",
+      "time": "6:00 AM",
+      "shift": "1st Shift",
+      "chair": "Chair 2",
+      "pod": "Pod A",
+      "available": true
+    }
+  ],
+  "patients": [
+    {
+      "id": "james-cole",
+      "mpi": "DV-2206385",
+      "first_name": "James",
+      "last_name": "Cole",
+      "preferred_name": "James",
+      "age": 58,
+      "preferred_language": "en",
+      "phone": "+16155550112",
+      "persona": "Ride never showed",
+      "persona_blurb": "Missed this morning after the broker van never arrived. Offer a specific chair and fix the ride.",
+      "modality": "ICHD",
+      "days_on_dialysis": 412,
+      "admission_date": "2025-09-10",
+      "schedule": {
+        "clinic": "Riverside Dialysis",
+        "pattern": "Tue · Thu · Sat",
+        "spoken_days": "Tuesday, Thursday, and Saturday",
+        "shift": "1st Shift",
+        "time": "6:00 AM",
+        "chair": "Chair 7",
+        "pod": "Pod B",
+        "duration_hours": 4
+      },
+      "missed": {
+        "date": "today",
+        "date_iso": "2026-10-27",
+        "weekday": "Tuesday",
+        "time": "6:00 AM",
+        "chair": "Chair 7",
+        "minutes_since": 47,
+        "status": "potential_miss",
+        "reason_code": "unknown",
+        "mtx_code": null
+      },
+      "transportation": {
+        "type": "Medical broker van",
+        "broker": "Volunteer State NEMT (Medicaid broker)",
+        "status": "no_show",
+        "pickup_window": "5:10–5:25 AM",
+        "failures_30d": 2,
+        "backup": "None on file",
+        "detail": "Broker pickup window 5:10–5:25 AM. Van never arrived. Two prior ride failures this month."
+      },
+      "insurance_status": "Medicare Part B · secondary Medicaid",
+      "insurance": {
+        "primary": "Medicare Part B",
+        "secondary": "Medicaid (TN managed care)",
+        "status": "active",
+        "verified_on": "2026-10-01",
+        "note": "Medicaid covers NEMT broker rides."
+      },
+      "consent_status": {
+        "status": "signed",
+        "treatment_consent_date": "2025-09-10",
+        "voice_outreach": true,
+        "sms_outreach": true,
+        "ai_disclosure": "required",
+        "preferred_contact_window": "Any time after 5 AM",
+        "authorized_contacts": [
+          "Angela Cole (daughter)"
+        ]
+      },
+      "access": {
+        "type": "AVF",
+        "type_label": "AV fistula",
+        "location": "Left forearm (radiocephalic)",
+        "placed_date": "2025-06-18",
+        "note": "Mature fistula, last cannulation uneventful Saturday.",
+        "cvc_journey": null,
+        "surgical_consult_date": null,
+        "last_assessment": "2026-10-24 strong thrill and bruit"
+      },
+      "clinical": {
+        "target_dry_weight_kg": 82.4,
+        "last_post_weight_kg": 84.1,
+        "idwg_kg": 3.2,
+        "idwg_flag": "high",
+        "idwg_history": [
+          {
+            "date": "2026-10-24",
+            "kg": 3.2
+          },
+          {
+            "date": "2026-10-22",
+            "kg": 2.9
+          },
+          {
+            "date": "2026-10-20",
+            "kg": 3.6
+          },
+          {
+            "date": "2026-10-17",
+            "kg": 2.8
+          },
+          {
+            "date": "2026-10-15",
+            "kg": 4.1
+          },
+          {
+            "date": "2026-10-10",
+            "kg": 2.7
+          }
+        ],
+        "idwg_avg_kg": 3.22,
+        "treatment_times": [
+          {
+            "date": "2026-10-24",
+            "scheduled_min": 240,
+            "actual_min": 240,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-22",
+            "scheduled_min": 240,
+            "actual_min": 235,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-20",
+            "scheduled_min": 240,
+            "actual_min": 195,
+            "status": "shortened"
+          },
+          {
+            "date": "2026-10-17",
+            "scheduled_min": 240,
+            "actual_min": 240,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-15",
+            "scheduled_min": 240,
+            "actual_min": 238,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-13",
+            "scheduled_min": 240,
+            "actual_min": 0,
+            "status": "missed"
+          }
+        ],
+        "labs": [
+          {
+            "analyte": "phosphorus",
+            "label": "Phosphorus",
+            "unit": "mg/dL",
+            "target": "3.5–5.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 5.9,
+                "flag": "high"
+              },
+              {
+                "month": "2026-09",
+                "value": 5.6,
+                "flag": "high"
+              }
+            ]
+          },
+          {
+            "analyte": "potassium",
+            "label": "Potassium",
+            "unit": "mEq/L",
+            "target": "3.5–5.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 5.3,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 5.0,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "kt_v",
+            "label": "Kt/V",
+            "unit": "",
+            "target": "≥1.2",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 1.38,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 1.45,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "albumin",
+            "label": "Albumin",
+            "unit": "g/dL",
+            "target": "≥4.0",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 3.8,
+                "flag": "low"
+              },
+              {
+                "month": "2026-09",
+                "value": 3.9,
+                "flag": "low"
+              }
+            ]
+          },
+          {
+            "analyte": "hemoglobin",
+            "label": "Hemoglobin",
+            "unit": "g/dL",
+            "target": "10.0–11.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 10.6,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 10.9,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "calcium",
+            "label": "Calcium",
+            "unit": "mg/dL",
+            "target": "8.4–10.2",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 9.0,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 9.1,
+                "flag": "in_range"
+              }
+            ]
+          }
+        ],
+        "binder": {
+          "name": "Sevelamer carbonate",
+          "adherence": "partial",
+          "note": "Takes breakfast and dinner doses; often skips lunch dose when out."
+        },
+        "medications": [
+          {
+            "name": "Sevelamer carbonate",
+            "dose": "1600 mg (2 × 800 mg) PO",
+            "timing": "Three times daily with meals",
+            "where": "home"
+          },
+          {
+            "name": "Insulin glargine",
+            "dose": "18 units SC",
+            "timing": "Nightly",
+            "where": "home"
+          },
+          {
+            "name": "Amlodipine",
+            "dose": "10 mg PO",
+            "timing": "Daily at bedtime",
+            "where": "home"
+          },
+          {
+            "name": "Renal multivitamin",
+            "dose": "1 tab PO",
+            "timing": "Daily",
+            "where": "home"
+          },
+          {
+            "name": "Methoxy PEG-epoetin beta",
+            "dose": "100 mcg IV",
+            "timing": "Every 2 weeks in chair",
+            "where": "in-center"
+          },
+          {
+            "name": "Calcitriol",
+            "dose": "0.5 mcg IV",
+            "timing": "Each treatment",
+            "where": "in-center"
+          }
+        ],
+        "hospitalization": null,
+        "hospitalizations": []
+      },
+      "miss_history": [
+        {
+          "date": "2026-10-20",
+          "type": "shortened",
+          "minutes_short": 45,
+          "reason_code": "TR-BROKER",
+          "note": "Broker van 50 minutes late; chair needed for 2nd shift."
+        },
+        {
+          "date": "2026-10-13",
+          "type": "missed",
+          "minutes_short": 240,
+          "reason_code": "TR-BROKER",
+          "note": "Broker no-show."
+        },
+        {
+          "date": "2026-10-06",
+          "type": "missed",
+          "minutes_short": 240,
+          "reason_code": "TR-WEATHER",
+          "note": "Flash-flood warning; broker cancelled runs."
+        }
+      ],
+      "risk": {
+        "level": "moderate",
+        "missed_30d": 3,
+        "shortened_30d": 1,
+        "hospitalization_risk_note": "Three misses in 30 days, all ride-related. Fluid climbs after a miss (4.1 kg IDWG after the 10-13 no-show). Missing today plus the long Saturday gap means 4+ days without a run if not made up."
+      },
+      "talking_points": [
+        "You came off Saturday about 1.7 kilos over your dry weight, so getting a run in soon takes that fluid off.",
+        "The last time a ride fell through, you came back 4.1 kilos up. A quick makeup keeps that from happening again.",
+        "Marcus, our social worker, can line up a backup SafeRide so a broker no-show doesn't cost you a treatment.",
+        "Phosphorus is a bit high at 5.9. The lunchtime binder dose helps."
+      ],
+      "worklist": {
+        "prior_attempts": 0,
+        "opened_at": "2026-10-27T06:20:00-05:00"
+      },
+      "preferred_slot_hint": "slot-wed-1000",
+      "notes": "Usually reliable. Daughter cannot leave work before 8. Needs a later chair or a confirmed ride."
+    },
+    {
+      "id": "rosa-alvarez",
+      "mpi": "DV-4419027",
+      "first_name": "Rosa",
+      "last_name": "Alvarez",
+      "preferred_name": "Rosa",
+      "age": 64,
+      "preferred_language": "en",
+      "phone": "+16155550188",
+      "persona": "Felt dizzy, stayed home",
+      "persona_blurb": "Missed this morning because she felt lightheaded. Check symptoms, then offer a chair.",
+      "modality": "ICHD",
+      "days_on_dialysis": 86,
+      "admission_date": "2026-08-02",
+      "schedule": {
+        "clinic": "Riverside Dialysis",
+        "pattern": "Tue · Thu · Sat",
+        "spoken_days": "Tuesday, Thursday, and Saturday",
+        "shift": "2nd Shift",
+        "time": "10:30 AM",
+        "chair": "Chair 11",
+        "pod": "Pod C",
+        "duration_hours": 3.5
+      },
+      "missed": {
+        "date": "today",
+        "date_iso": "2026-10-27",
+        "weekday": "Tuesday",
+        "time": "10:30 AM",
+        "chair": "Chair 11",
+        "minutes_since": 22,
+        "status": "potential_miss",
+        "reason_code": "unknown",
+        "mtx_code": null
+      },
+      "transportation": {
+        "type": "Daughter drives",
+        "broker": null,
+        "status": "available",
+        "failures_30d": 0,
+        "backup": "SafeRide eligible via Medicare Advantage plan",
+        "detail": "Daughter can bring her after 1:00 PM today."
+      },
+      "insurance_status": "Medicare Advantage",
+      "insurance": {
+        "primary": "Medicare Advantage HMO (BlueRidge Senior Advantage)",
+        "secondary": null,
+        "status": "active",
+        "verified_on": "2026-10-01",
+        "note": "Plan includes 24 one-way rides per year."
+      },
+      "consent_status": {
+        "status": "signed",
+        "treatment_consent_date": "2026-08-02",
+        "voice_outreach": true,
+        "sms_outreach": true,
+        "ai_disclosure": "required",
+        "preferred_contact_window": "8 AM – 7 PM",
+        "authorized_contacts": [
+          "Lucia Alvarez (daughter)"
+        ]
+      },
+      "access": {
+        "type": "CVC",
+        "type_label": "Tunneled CVC",
+        "location": "Right IJ",
+        "placed_date": "2026-07-29",
+        "note": "Vein mapping scheduled Nov 4. CWOW note: hesitant about fistula surgery.",
+        "cvc_journey": {
+          "stage": "Vein mapping scheduled",
+          "cvc_days": 90,
+          "vein_mapping_date": "2026-11-04",
+          "note": "CWOW CVC journey: education done 10-01; patient hesitant about fistula surgery, wants to talk with daughter."
+        },
+        "surgical_consult_date": "2026-11-12",
+        "last_assessment": "2026-10-24 exit site clean, flows adequate"
+      },
+      "clinical": {
+        "target_dry_weight_kg": 61.0,
+        "last_post_weight_kg": 62.8,
+        "idwg_kg": 2.1,
+        "idwg_flag": "watch",
+        "idwg_history": [
+          {
+            "date": "2026-10-24",
+            "kg": 2.1
+          },
+          {
+            "date": "2026-10-22",
+            "kg": 1.8
+          },
+          {
+            "date": "2026-10-20",
+            "kg": 2.4
+          },
+          {
+            "date": "2026-10-17",
+            "kg": 1.9
+          },
+          {
+            "date": "2026-10-15",
+            "kg": 2.2
+          },
+          {
+            "date": "2026-10-13",
+            "kg": 2.6
+          }
+        ],
+        "idwg_avg_kg": 2.17,
+        "treatment_times": [
+          {
+            "date": "2026-10-24",
+            "scheduled_min": 210,
+            "actual_min": 210,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-22",
+            "scheduled_min": 210,
+            "actual_min": 180,
+            "status": "shortened"
+          },
+          {
+            "date": "2026-10-20",
+            "scheduled_min": 210,
+            "actual_min": 205,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-17",
+            "scheduled_min": 210,
+            "actual_min": 210,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-15",
+            "scheduled_min": 210,
+            "actual_min": 210,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-13",
+            "scheduled_min": 210,
+            "actual_min": 208,
+            "status": "completed"
+          }
+        ],
+        "labs": [
+          {
+            "analyte": "phosphorus",
+            "label": "Phosphorus",
+            "unit": "mg/dL",
+            "target": "3.5–5.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 5.1,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 4.8,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "potassium",
+            "label": "Potassium",
+            "unit": "mEq/L",
+            "target": "3.5–5.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 4.9,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 4.6,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "kt_v",
+            "label": "Kt/V",
+            "unit": "",
+            "target": "≥1.2",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 1.22,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 1.18,
+                "flag": "low"
+              }
+            ]
+          },
+          {
+            "analyte": "albumin",
+            "label": "Albumin",
+            "unit": "g/dL",
+            "target": "≥4.0",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 3.5,
+                "flag": "low"
+              },
+              {
+                "month": "2026-09",
+                "value": 3.4,
+                "flag": "low"
+              }
+            ]
+          },
+          {
+            "analyte": "hemoglobin",
+            "label": "Hemoglobin",
+            "unit": "g/dL",
+            "target": "10.0–11.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 9.1,
+                "flag": "low"
+              },
+              {
+                "month": "2026-09",
+                "value": 9.4,
+                "flag": "low"
+              }
+            ]
+          },
+          {
+            "analyte": "calcium",
+            "label": "Calcium",
+            "unit": "mg/dL",
+            "target": "8.4–10.2",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 8.7,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 8.6,
+                "flag": "in_range"
+              }
+            ]
+          }
+        ],
+        "binder": {
+          "name": "Calcium acetate",
+          "adherence": "good",
+          "note": "Daughter fills a weekly pill box."
+        },
+        "medications": [
+          {
+            "name": "Calcium acetate",
+            "dose": "1334 mg (2 × 667 mg) PO",
+            "timing": "Three times daily with meals",
+            "where": "home"
+          },
+          {
+            "name": "Metoprolol tartrate",
+            "dose": "25 mg PO",
+            "timing": "Twice daily; hold morning dose on treatment days if SBP < 100",
+            "where": "home"
+          },
+          {
+            "name": "Furosemide",
+            "dose": "80 mg PO",
+            "timing": "Daily on non-dialysis days",
+            "where": "home"
+          },
+          {
+            "name": "Epoetin alfa",
+            "dose": "6,000 units IV",
+            "timing": "Each treatment",
+            "where": "in-center"
+          },
+          {
+            "name": "Iron sucrose",
+            "dose": "100 mg IV",
+            "timing": "Weekly (loading course, 4 of 10)",
+            "where": "in-center"
+          },
+          {
+            "name": "Heparin catheter lock",
+            "dose": "1,000 units/mL per lumen",
+            "timing": "End of each treatment",
+            "where": "in-center"
+          }
+        ],
+        "hospitalization": "Discharged St. Thomas Midtown 2026-09-28, volume overload",
+        "hospitalizations": [
+          {
+            "admit_date": "2026-09-24",
+            "discharge_date": "2026-09-28",
+            "facility": "St. Thomas Midtown",
+            "reason": "Volume overload / pulmonary edema"
+          },
+          {
+            "admit_date": "2026-07-27",
+            "discharge_date": "2026-08-01",
+            "facility": "St. Thomas Midtown",
+            "reason": "CKD 4 progressed to ESKD; tunneled CVC placed, dialysis started"
+          }
+        ]
+      },
+      "miss_history": [
+        {
+          "date": "2026-10-22",
+          "type": "shortened",
+          "minutes_short": 30,
+          "reason_code": "PR-UNWELL",
+          "note": "Cramping and low BP; asked to come off early."
+        }
+      ],
+      "risk": {
+        "level": "high",
+        "missed_30d": 1,
+        "shortened_30d": 1,
+        "hospitalization_risk_note": "Less than 30 days from a volume-overload discharge, still on a CVC, hemoglobin 9.1 and falling. Screen symptoms before booking. Any chest pain, shortness of breath or confusion means stop and escalate."
+      },
+      "talking_points": [
+        "Feeling lightheaded can go with a low blood count. Your hemoglobin was 9.1 this month, so Keisha will want to hear about it.",
+        "You were in the hospital last month for fluid. Getting in today at 2:00 keeps it from building up again.",
+        "Your daughter can bring you after 1, so the 2:00 chair today works.",
+        "Vein mapping is November 4th. A fistula means fewer infections than the catheter."
+      ],
+      "worklist": {
+        "prior_attempts": 0,
+        "opened_at": "2026-10-27T10:45:00-05:00"
+      },
+      "preferred_slot_hint": "slot-today-1400",
+      "notes": "New-ish to dialysis. If she reports chest pain, trouble breathing, or confusion, stop booking and escalate."
+    },
+    {
+      "id": "deshawn-reed",
+      "mpi": "DV-7730144",
+      "first_name": "DeShawn",
+      "last_name": "Reed",
+      "preferred_name": "Shawn",
+      "age": 47,
+      "preferred_language": "en",
+      "phone": "+16155550140",
+      "persona": "Needed a day",
+      "persona_blurb": "Third miss in two weeks. Tired of the chair. Respect the choice, still document, still offer one time.",
+      "modality": "ICHD",
+      "days_on_dialysis": 1205,
+      "admission_date": "2023-07-10",
+      "schedule": {
+        "clinic": "Riverside Dialysis",
+        "pattern": "Tue · Thu · Sat",
+        "spoken_days": "Tuesday, Thursday, and Saturday",
+        "shift": "3rd Shift",
+        "time": "4:30 PM",
+        "chair": "Chair 3",
+        "pod": "Pod A",
+        "duration_hours": 4
+      },
+      "missed": {
+        "date": "today",
+        "date_iso": "2026-10-27",
+        "weekday": "Tuesday",
+        "time": "4:30 PM",
+        "chair": "Chair 3",
+        "minutes_since": 18,
+        "status": "confirmed_miss",
+        "reason_code": "unknown",
+        "mtx_code": null
+      },
+      "transportation": {
+        "type": "Self / city bus",
+        "broker": null,
+        "status": "available",
+        "failures_30d": 0,
+        "backup": "Bus pass via MSW",
+        "detail": "Takes the 4:05 bus. No broker."
+      },
+      "insurance_status": "Medicaid",
+      "insurance": {
+        "primary": "Medicaid (TN managed care)",
+        "secondary": null,
+        "status": "active",
+        "verified_on": "2026-10-01",
+        "note": "Eligible for NEMT broker rides; has declined enrollment."
+      },
+      "consent_status": {
+        "status": "signed",
+        "treatment_consent_date": "2023-07-10",
+        "voice_outreach": true,
+        "sms_outreach": true,
+        "ai_disclosure": "required",
+        "preferred_contact_window": "After 10 AM",
+        "authorized_contacts": []
+      },
+      "access": {
+        "type": "AVG",
+        "type_label": "AV graft",
+        "location": "Right upper arm",
+        "placed_date": "2023-11-02",
+        "note": "Graft thrill present last Saturday. Angioplasty for venous stenosis 2026-03-18.",
+        "cvc_journey": null,
+        "surgical_consult_date": null,
+        "last_assessment": "2026-10-24 thrill present"
+      },
+      "clinical": {
+        "target_dry_weight_kg": 94.2,
+        "last_post_weight_kg": 96.0,
+        "idwg_kg": 3.8,
+        "idwg_flag": "high",
+        "idwg_history": [
+          {
+            "date": "2026-10-24",
+            "kg": 3.8
+          },
+          {
+            "date": "2026-10-22",
+            "kg": 5.0
+          },
+          {
+            "date": "2026-10-17",
+            "kg": 3.9
+          },
+          {
+            "date": "2026-10-15",
+            "kg": 5.1
+          },
+          {
+            "date": "2026-10-10",
+            "kg": 3.4
+          },
+          {
+            "date": "2026-10-08",
+            "kg": 3.6
+          }
+        ],
+        "idwg_avg_kg": 4.13,
+        "treatment_times": [
+          {
+            "date": "2026-10-24",
+            "scheduled_min": 240,
+            "actual_min": 200,
+            "status": "shortened"
+          },
+          {
+            "date": "2026-10-22",
+            "scheduled_min": 240,
+            "actual_min": 240,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-20",
+            "scheduled_min": 240,
+            "actual_min": 0,
+            "status": "missed"
+          },
+          {
+            "date": "2026-10-17",
+            "scheduled_min": 240,
+            "actual_min": 235,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-15",
+            "scheduled_min": 240,
+            "actual_min": 180,
+            "status": "shortened"
+          },
+          {
+            "date": "2026-10-13",
+            "scheduled_min": 240,
+            "actual_min": 0,
+            "status": "missed"
+          }
+        ],
+        "labs": [
+          {
+            "analyte": "phosphorus",
+            "label": "Phosphorus",
+            "unit": "mg/dL",
+            "target": "3.5–5.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 6.8,
+                "flag": "high"
+              },
+              {
+                "month": "2026-09",
+                "value": 7.2,
+                "flag": "high"
+              }
+            ]
+          },
+          {
+            "analyte": "potassium",
+            "label": "Potassium",
+            "unit": "mEq/L",
+            "target": "3.5–5.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 5.7,
+                "flag": "high"
+              },
+              {
+                "month": "2026-09",
+                "value": 6.1,
+                "flag": "critical"
+              }
+            ]
+          },
+          {
+            "analyte": "kt_v",
+            "label": "Kt/V",
+            "unit": "",
+            "target": "≥1.2",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 1.12,
+                "flag": "low"
+              },
+              {
+                "month": "2026-09",
+                "value": 1.08,
+                "flag": "low"
+              }
+            ]
+          },
+          {
+            "analyte": "albumin",
+            "label": "Albumin",
+            "unit": "g/dL",
+            "target": "≥4.0",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 3.6,
+                "flag": "low"
+              },
+              {
+                "month": "2026-09",
+                "value": 3.7,
+                "flag": "low"
+              }
+            ]
+          },
+          {
+            "analyte": "hemoglobin",
+            "label": "Hemoglobin",
+            "unit": "g/dL",
+            "target": "10.0–11.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 9.8,
+                "flag": "low"
+              },
+              {
+                "month": "2026-09",
+                "value": 10.2,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "calcium",
+            "label": "Calcium",
+            "unit": "mg/dL",
+            "target": "8.4–10.2",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 8.8,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 8.9,
+                "flag": "in_range"
+              }
+            ]
+          }
+        ],
+        "binder": {
+          "name": "Sevelamer carbonate",
+          "adherence": "poor",
+          "note": "Says he doesn't take it at work; pill burden. RD follow-up open."
+        },
+        "medications": [
+          {
+            "name": "Sevelamer carbonate",
+            "dose": "2400 mg (3 × 800 mg) PO",
+            "timing": "Three times daily with meals",
+            "where": "home"
+          },
+          {
+            "name": "Sodium zirconium cyclosilicate",
+            "dose": "10 g PO",
+            "timing": "Daily on non-dialysis days",
+            "where": "home"
+          },
+          {
+            "name": "Cinacalcet",
+            "dose": "60 mg PO",
+            "timing": "Daily with dinner",
+            "where": "home"
+          },
+          {
+            "name": "Lisinopril",
+            "dose": "20 mg PO",
+            "timing": "Daily",
+            "where": "home"
+          },
+          {
+            "name": "Methoxy PEG-epoetin beta",
+            "dose": "150 mcg IV",
+            "timing": "Every 2 weeks in chair",
+            "where": "in-center"
+          },
+          {
+            "name": "Doxercalciferol",
+            "dose": "4 mcg IV",
+            "timing": "Each treatment",
+            "where": "in-center"
+          }
+        ],
+        "hospitalization": "Cumberland General 2026-08-14 to 08-16, hyperkalemia after back-to-back misses",
+        "hospitalizations": [
+          {
+            "admit_date": "2026-08-14",
+            "discharge_date": "2026-08-16",
+            "facility": "Cumberland General Hospital",
+            "reason": "Hyperkalemia (K+ 6.9) after two missed treatments; emergent dialysis"
+          }
+        ]
+      },
+      "miss_history": [
+        {
+          "date": "2026-10-24",
+          "type": "shortened",
+          "minutes_short": 40,
+          "reason_code": "PR-FATIGUE",
+          "note": "Asked to come off early; signed early-termination form."
+        },
+        {
+          "date": "2026-10-20",
+          "type": "missed",
+          "minutes_short": 240,
+          "reason_code": "PR-CHOICE",
+          "note": "Patient declined."
+        },
+        {
+          "date": "2026-10-15",
+          "type": "shortened",
+          "minutes_short": 60,
+          "reason_code": "PR-FATIGUE",
+          "note": "Cramping and tired; came off early."
+        },
+        {
+          "date": "2026-10-13",
+          "type": "missed",
+          "minutes_short": 240,
+          "reason_code": "PR-FATIGUE",
+          "note": "Patient declined, said he was worn out."
+        },
+        {
+          "date": "2026-10-01",
+          "type": "missed",
+          "minutes_short": 240,
+          "reason_code": "SC-WORK",
+          "note": "Picked up an extra warehouse shift."
+        }
+      ],
+      "risk": {
+        "level": "high",
+        "missed_30d": 4,
+        "shortened_30d": 2,
+        "hospitalization_risk_note": "4 misses and 2 short runs in 30 days. Potassium 6.1 in September, 5.7 in October. Admitted in August for K+ 6.9 after back-to-back misses. IDT and nephrologist already involved."
+      },
+      "talking_points": [
+        "Your potassium was 6.1 in September. The last time you missed two in a row, you ended up in the hospital in August.",
+        "Tomorrow's 10:00 chair is open, and you can still take it even if you'd rather not today.",
+        "Dr. Shah can talk with you about options like a different shift or home dialysis if the chair is wearing you down.",
+        "It's your call. I'll note it, and I'm not going to push."
+      ],
+      "worklist": {
+        "prior_attempts": 0,
+        "opened_at": "2026-10-27T16:45:00-05:00"
+      },
+      "preferred_slot_hint": "slot-wed-1000",
+      "notes": "Frequent misser. IDT already involved. If he declines twice on this call, notify RN and nephrologist. Do not argue."
+    },
+    {
+      "id": "maria-gonzalez",
+      "mpi": "DV-5582610",
+      "first_name": "Maria",
+      "last_name": "Gonzalez",
+      "preferred_name": "Maria",
+      "age": 52,
+      "preferred_language": "en",
+      "phone": "+16155550163",
+      "persona": "Caring for her mother",
+      "persona_blurb": "Her mother's home-health aide didn't show, so she couldn't leave. Offer the Hermitage chair near her mom's house.",
+      "modality": "ICHD",
+      "days_on_dialysis": 330,
+      "admission_date": "2025-12-01",
+      "schedule": {
+        "clinic": "Riverside Dialysis",
+        "pattern": "Tue · Thu · Sat",
+        "spoken_days": "Tuesday, Thursday, and Saturday",
+        "shift": "2nd Shift",
+        "time": "11:00 AM",
+        "chair": "Chair 6",
+        "pod": "Pod C",
+        "duration_hours": 4
+      },
+      "missed": {
+        "date": "today",
+        "date_iso": "2026-10-27",
+        "weekday": "Tuesday",
+        "time": "11:00 AM",
+        "chair": "Chair 6",
+        "minutes_since": 35,
+        "status": "potential_miss",
+        "reason_code": "unknown",
+        "mtx_code": null
+      },
+      "transportation": {
+        "type": "Drives herself",
+        "broker": null,
+        "status": "available",
+        "failures_30d": 0,
+        "backup": "None needed",
+        "detail": "Own car. Can drive to either clinic once someone is with her mother."
+      },
+      "insurance_status": "Commercial (employer plan) · Medicare coordination month 11 of 30",
+      "insurance": {
+        "primary": "Commercial employer group plan",
+        "secondary": "Medicare Part A/B (coordination period)",
+        "status": "active",
+        "verified_on": "2026-10-01",
+        "note": "Commercial primary through the 30-month coordination period."
+      },
+      "consent_status": {
+        "status": "signed",
+        "treatment_consent_date": "2025-12-01",
+        "voice_outreach": true,
+        "sms_outreach": true,
+        "ai_disclosure": "required",
+        "preferred_contact_window": "8–10 AM or after 6 PM",
+        "authorized_contacts": [
+          "Carmen Gonzalez (sister)"
+        ],
+        "interpreter_needed": false
+      },
+      "access": {
+        "type": "AVF",
+        "type_label": "AV fistula",
+        "location": "Left upper arm (brachiocephalic)",
+        "placed_date": "2025-10-15",
+        "note": "Mature fistula. CVC removed 2026-02-20 after fistula matured.",
+        "cvc_journey": {
+          "stage": "Completed - CVC removed",
+          "cvc_days": 81,
+          "vein_mapping_date": "2025-10-02",
+          "note": "CWOW CVC journey closed 2026-02-20."
+        },
+        "surgical_consult_date": "2025-10-08",
+        "last_assessment": "2026-10-24 strong thrill"
+      },
+      "clinical": {
+        "target_dry_weight_kg": 70.5,
+        "last_post_weight_kg": 71.0,
+        "idwg_kg": 2.6,
+        "idwg_flag": "watch",
+        "idwg_history": [
+          {
+            "date": "2026-10-24",
+            "kg": 2.6
+          },
+          {
+            "date": "2026-10-22",
+            "kg": 2.4
+          },
+          {
+            "date": "2026-10-20",
+            "kg": 3.0
+          },
+          {
+            "date": "2026-10-17",
+            "kg": 2.2
+          },
+          {
+            "date": "2026-10-15",
+            "kg": 2.5
+          },
+          {
+            "date": "2026-10-13",
+            "kg": 2.9
+          }
+        ],
+        "idwg_avg_kg": 2.6,
+        "treatment_times": [
+          {
+            "date": "2026-10-24",
+            "scheduled_min": 240,
+            "actual_min": 240,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-22",
+            "scheduled_min": 240,
+            "actual_min": 240,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-20",
+            "scheduled_min": 240,
+            "actual_min": 238,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-17",
+            "scheduled_min": 240,
+            "actual_min": 210,
+            "status": "shortened"
+          },
+          {
+            "date": "2026-10-15",
+            "scheduled_min": 240,
+            "actual_min": 240,
+            "status": "completed"
+          },
+          {
+            "date": "2026-10-13",
+            "scheduled_min": 240,
+            "actual_min": 235,
+            "status": "completed"
+          }
+        ],
+        "labs": [
+          {
+            "analyte": "phosphorus",
+            "label": "Phosphorus",
+            "unit": "mg/dL",
+            "target": "3.5–5.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 5.0,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 5.2,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "potassium",
+            "label": "Potassium",
+            "unit": "mEq/L",
+            "target": "3.5–5.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 5.1,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 4.9,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "kt_v",
+            "label": "Kt/V",
+            "unit": "",
+            "target": "≥1.2",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 1.32,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 1.35,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "albumin",
+            "label": "Albumin",
+            "unit": "g/dL",
+            "target": "≥4.0",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 3.4,
+                "flag": "low"
+              },
+              {
+                "month": "2026-09",
+                "value": 3.5,
+                "flag": "low"
+              }
+            ]
+          },
+          {
+            "analyte": "hemoglobin",
+            "label": "Hemoglobin",
+            "unit": "g/dL",
+            "target": "10.0–11.5",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 10.7,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 11.0,
+                "flag": "in_range"
+              }
+            ]
+          },
+          {
+            "analyte": "calcium",
+            "label": "Calcium",
+            "unit": "mg/dL",
+            "target": "8.4–10.2",
+            "results": [
+              {
+                "month": "2026-10",
+                "value": 9.4,
+                "flag": "in_range"
+              },
+              {
+                "month": "2026-09",
+                "value": 9.3,
+                "flag": "in_range"
+              }
+            ]
+          }
+        ],
+        "binder": {
+          "name": "Sucroferric oxyhydroxide",
+          "adherence": "good",
+          "note": "Chewable; keeps them in her purse."
+        },
+        "medications": [
+          {
+            "name": "Sucroferric oxyhydroxide",
+            "dose": "500 mg chewable PO",
+            "timing": "Three times daily with meals",
+            "where": "home"
+          },
+          {
+            "name": "Losartan",
+            "dose": "50 mg PO",
+            "timing": "Daily",
+            "where": "home"
+          },
+          {
+            "name": "Atorvastatin",
+            "dose": "40 mg PO",
+            "timing": "Nightly",
+            "where": "home"
+          },
+          {
+            "name": "Renal multivitamin",
+            "dose": "1 tab PO",
+            "timing": "Daily",
+            "where": "home"
+          },
+          {
+            "name": "Epoetin alfa",
+            "dose": "4,000 units IV",
+            "timing": "Each treatment",
+            "where": "in-center"
+          },
+          {
+            "name": "Paricalcitol",
+            "dose": "2 mcg IV",
+            "timing": "Each treatment",
+            "where": "in-center"
+          }
+        ],
+        "hospitalization": null,
+        "hospitalizations": []
+      },
+      "miss_history": [
+        {
+          "date": "2026-10-17",
+          "type": "shortened",
+          "minutes_short": 30,
+          "reason_code": "SC-CAREGIVING",
+          "note": "Left early; mother's aide had to leave."
+        },
+        {
+          "date": "2026-10-08",
+          "type": "missed",
+          "minutes_short": 240,
+          "reason_code": "SC-CAREGIVING",
+          "note": "Home-health aide no-show; no one to stay with mother."
+        }
+      ],
+      "risk": {
+        "level": "moderate",
+        "missed_30d": 2,
+        "shortened_30d": 1,
+        "hospitalization_risk_note": "Misses track caregiving gaps, not health. Missing Tuesday after the weekend means 5 days without treatment if she waits for Thursday. Albumin is slowly falling (3.4)."
+      },
+      "talking_points": [
+        "Your last treatment was Saturday. Waiting until Thursday would be five days without one.",
+        "Hermitage Dialysis has a chair tomorrow at 1:30, about 10 minutes from your mom's house, while your sister is with her.",
+        "Marcus, our social worker, can help find respite care or an adult day program for your mom on treatment days.",
+        "Your albumin is 3.4. Lauren, our dietitian, can share easy protein ideas."
+      ],
+      "worklist": {
+        "prior_attempts": 0,
+        "opened_at": "2026-10-27T11:20:00-05:00"
+      },
+      "preferred_slot_hint": "slot-wed-hermitage-1330",
+      "notes": "Primary caregiver for her mother, who has dementia; the aide agency is unreliable on Tuesdays. Her sister Carmen can cover afternoons. Hermitage Dialysis is 10 minutes from her mother's house."
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+@let patient = this.patient();
+@let data = this.data();
+@if (patient.clinical || data.fluid.values.length) {
+  <section class="chart-section">
+    <div class="section-title"><h3>Fluid & weight</h3><span>{{ humanize(patient.clinical?.idwg_flag) }}</span></div>
+    <dl class="fluid-values">
+      <div><dt>Dry weight</dt><dd>{{ patient.clinical?.target_dry_weight_kg ?? '—' }} <small>kg</small></dd></div>
+      <div><dt>Last post</dt><dd>{{ patient.clinical?.last_post_weight_kg ?? '—' }} <small>kg</small></dd></div>
+      <div><dt>IDWG</dt><dd [class.abnormal]="patient.clinical?.idwg_flag === 'high'">{{ patient.clinical?.idwg_kg ?? data.fluid.values.at(-1) ?? '—' }} <small>kg</small></dd></div>
+    </dl>
+    @if (data.fluid.values.length > 1) {
+      <div class="fluid-trend"><span>Last {{ data.fluid.values.length }} runs</span><app-sparkline [values]="data.fluid.values" label="IDWG in kg" /></div>
+    }
+  </section>
+}
+@if (data.labs.length) {
+  <section class="chart-section">
+    <div class="section-title"><h3>Lab trends</h3><span>Prior & latest</span></div>
+    <table><caption class="sr-only">Lab results with reference ranges and trends</caption>
+      <thead><tr><th scope="col">Test</th><th scope="col">Prior</th><th scope="col">Latest</th><th scope="col">Trend</th></tr></thead>
+      <tbody>@for (lab of data.labs; track lab.label) {
+        <tr><th scope="row">{{ lab.label }}<small>{{ lab.range }}</small></th>
+          <td>{{ lab.values.at(-2) ?? '—' }}</td>
+          <td [class.abnormal]="!!lab.flag">{{ lab.values.at(-1) }} @if (lab.flag) { <span>{{ humanize(lab.flag) }}</span> }<small>{{ lab.unit }}</small></td>
+          <td><app-sparkline [values]="lab.values" [label]="lab.label + ' trend'" /></td></tr>
+      }</tbody>
+    </table>
+  </section>
+}
+@if (patient.access; as access) {
+  <section class="chart-section">
+    <div class="section-title"><h3>Vascular access</h3></div>
+    <p class="access"><strong>{{ access.type_label || access.type }}</strong> · {{ access.location }}</p>
+    @if (access.note) { <p class="section-note">{{ access.note }}</p> }
+  </section>
+}
+@if (data.meds.length) {
+  <section class="chart-section">
+    <div class="section-title"><h3>Medications</h3></div>
+    <ul class="meds">@for (med of data.meds; track $index) {
+      <li><strong>{{ med.name }}</strong> {{ med.dose }} @if (med.binder) { <span class="badge">Binder</span> }
+        <p>{{ med.sig }} {{ med.kind && !med.binder ? humanize(med.kind) : '' }}</p>@if (med.note) { <small>{{ med.note }}</small> }</li>
+    }</ul>
+  </section>
+}
+<section class="chart-section">
+  <div class="section-title"><h3>Patient details</h3></div>
+  <dl class="detail-list">
+    @if (patient.days_on_dialysis !== undefined) { <div><dt>Days on dialysis</dt><dd>{{ patient.days_on_dialysis }}</dd></div> }
+    @if (patient.admission_date) { <div><dt>Admission</dt><dd>{{ patient.admission_date }}</dd></div> }
+    @if (patient.insurance_status) { <div><dt>Insurance</dt><dd>{{ patient.insurance_status }}</dd></div> }
+    @if (data.consent) { <div><dt>Consent</dt><dd>{{ data.consent }}</dd></div> }
+  </dl>
+</section>
+<section class="chart-section">
+  <div class="section-title"><h3>History & notes</h3></div>
+  @if (data.hospitalizations.length) {
+    <h4>Hospitalizations</h4><ul class="history">@for (hospital of data.hospitalizations; track $index) {
+      <li>{{ hospital.text || [hospital.when, hospital.where, hospital.why].join(' · ') }}</li>
+    }</ul>
+  }
+  @if (data.misses.length) {
+    <h4>Prior misses</h4><ul class="history">@for (miss of data.misses; track $index) { <li>{{ miss }}</li> }</ul>
+  }
+  @if (patient.notes) { <h4>Care team note</h4><p class="section-note">{{ patient.notes }}</p> }
+  @if (patient.runtime?.outreach_notes?.length) {
+    <h4>Outreach log</h4><ul class="history">@for (note of patient.runtime.outreach_notes; track $index) {
+      @if (note.text) { <li><time>{{ note.at | date:'shortTime' }}</time>{{ note.text }}</li> }
+    }</ul>
+  }
+  @if (!patient.notes && !data.hospitalizations.length && !data.misses.length && !patient.runtime?.outreach_notes?.length) {
+    <p class="section-note">No history or notes recorded.</p>
+  }
+</section>

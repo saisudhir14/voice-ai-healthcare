@@ -1,0 +1,31 @@
+<a class="skip-link" href="#workspace">Skip to workspace</a>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark"><app-icon name="pulse" /></span><span>Village Line</span></div>
+  <span class="topbar-divider"></span>
+  <span class="facility">{{ workspace.state().facility?.name || 'Patient outreach' }}</span>
+  <div class="topbar-actions">
+    <span class="connection" role="status"><i class="status-dot" [class.connected]="workspace.state().link === 'open'"></i>{{ linkLabel() }}</span>
+    <span class="synthetic"><app-icon name="shield" /> Synthetic data</span>
+    <button mat-icon-button aria-label="About Village Line" (click)="showAbout()"><app-icon name="info" /></button>
+  </div>
+</header>
+<main id="workspace">
+  <div class="page-heading">
+    <div><p class="context">Patient outreach</p><h1>A little care. A way back.</h1>
+      <p class="page-description">Helping patients return to treatment, one conversation at a time.</p></div>
+    <span class="workspace-label"><app-icon name="calendar" /> Missed treatment recovery</span>
+  </div>
+  <div class="workspace-grid">
+    <app-call-panel />
+    <div class="workspace-content">
+      <mat-button-toggle-group class="mobile-switch" aria-label="Workspace view"
+        [value]="mobileView()" (change)="mobileView.set($event.value)" hideSingleSelectionIndicator>
+        <mat-button-toggle value="conversation">Conversation</mat-button-toggle>
+        <mat-button-toggle value="chart">Patient chart</mat-button-toggle>
+      </mat-button-toggle-group>
+      <app-conversation [class.mobile-hidden]="mobileView() !== 'conversation'" />
+      <app-chart-panel [class.mobile-hidden]="mobileView() !== 'chart'" />
+    </div>
+  </div>
+  <footer class="page-footer"><span>Designed around the patient.</span><span>Synthetic clinic · No patient health information</span></footer>
+</main>

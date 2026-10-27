@@ -1,0 +1,39 @@
+# Env & secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Python
+**/.venv/
+**/__pycache__/
+**/*.pyc
+**/.pytest_cache/
+**/.ruff_cache/
+**/*.egg-info/
+server/.venv/
+_archive/
+
+# Node
+web/node_modules/
+web/dist/
+web/.vite/
+web/.angular/
+web/test-results/
+web/playwright-report/
+web-react/
+_archive/web/node_modules/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.cursor/
+*.swp
+
+# Runtime
+.dev/
+data/sessions/
+*.log
+.coverage
+htmlcov/

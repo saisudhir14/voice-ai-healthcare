@@ -1,94 +1,117 @@
-# Patient Companion
+# Village Line
 
-Patient Companion for the Emerging Tech Foundry
+Live missed-treatment recovery voice agent for DaVita.
 
+Maya calls as an automated teammate from Riverside Dialysis. She already knows the chair the patient missed, asks why, offers a specific makeup slot from ScheduleHub, and writes the outreach back to a CWOW-shaped chart. All patients are synthetic.
 
-## Getting started
+This is the **Patient Outreach** use case — the DaVita name for it is **Missed Tx / Awaiting Reschedule**.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Talk from your phone
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+1. Start both servers below on this Mac.
+2. Put your phone on the same Wi-Fi.
+3. Open the LAN URL printed on the page (also from `GET /api/lan`).
+4. Tap **Talk to Maya**. Allow the microphone.
 
-## Add your files
+The voice path is peer-to-peer WebRTC in the phone browser. No Twilio bill.
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## Call through Linphone (SIP, no carrier)
 
+The API runs its own tiny SIP registrar on UDP 5060. Linphone (desktop or phone app) registers straight to this Mac; nothing goes to linphone.org.
+
+1. `./dev.sh`. It prints the exact Linphone settings at the end (or `curl localhost:7860/api/sip/status`).
+2. In Linphone, choose **Use a SIP account → Third-party SIP account**. Do **not** use "Register / Create account" (that's linphone.org and fails with "Bad URI").
+   | Field | Value |
+   |---|---|
+   | Username | anything, e.g. `voice-ai-test` |
+   | Password | anything (not checked on the LAN) |
+   | Domain | this Mac's IP, `ipconfig getifaddr en0` (not someone else's) |
+   | Transport | UDP |
+   | Outbound proxy / Registrar | blank |
+3. Click **Connection**. `GET /api/sip/status` should show `"registered": true`.
+4. In the dashboard pick a patient and place the call; Linphone rings. Or dial `maya` from Linphone (inbound uses the last selected patient, `INBOUND_PATIENT` overrides).
+
+If it says "Error during connection":
+- The API isn't running, or something else holds UDP 5060 (`lsof -nP -iUDP:5060`; quit Zoom/Webex/Bria). `SIP_PORT=5070 ./dev.sh` moves it; then use domain `IP:5070`.
+- macOS asked to allow incoming connections for Python: click **Allow** (System Settings → Network → Firewall).
+- Phone app only: phone and Mac must be on the same Wi-Fi. Corporate/guest Wi-Fi usually blocks device-to-device traffic; use home Wi-Fi or a hotspot. VPN can change which IP is right; set `SIP_HOST_IP=<ip>` if the detected one is wrong.
+- The Mac's IP changes per network; update the Linphone domain when it does.
+
+Test without a phone: `cd server && uv run python tools/fake_linphone.py --server 127.0.0.1:5060 --record /tmp/maya.wav`, then `POST /api/call {"patient_id":"james-cole"}`.
+
+## Stack
+
+| Layer | What |
+|---|---|
+| Transport | Pipecat SmallWebRTC |
+| VAD | Silero |
+| STT | Google Cloud Speech-to-Text streaming |
+| LLM | Vertex Gemini 2.5 Flash |
+| TTS | Google Chirp 3 HD (`en-US-Chirp3-HD-Aoede`, English only) |
+| Clinic | In-memory ScheduleHub + CWOW stand-in |
+| Dashboard | Angular 22, Angular Material, signals, SCSS |
+
+If `gcloud` is not signed in, the call falls back to local Whisper, Ollama, and Kokoro. Sign in for the fast path:
+
+```bash
+gcloud auth login --update-adc
 ```
-cd existing_repo
-git remote add origin https://gitlab.gcp.davita.com/corporate-applications/emerging-tech-foundry/patient-companion.git
-git branch -M master
-git push -uf origin master
+
+## Run
+
+```bash
+./dev.sh
 ```
 
-## Integrate with your tools
+That installs Python and frontend libraries, then starts the voice API and the demo UI. With a current Google login it does not start Ollama.
 
-* [Set up project integrations](https://gitlab.gcp.davita.com/corporate-applications/emerging-tech-foundry/patient-companion/-/settings/integrations)
+Open [http://localhost:8173](http://localhost:8173). Ctrl-C stops both servers. Refresh the page and tap **Talk to Maya** again after a restart. Ports: UI `WEB_PORT` (8173), API `API_PORT` (7860), SIP `SIP_PORT` (5060).
 
-## Collaborate with your team
+## Angular dashboard
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+The UI in `web/` is a standalone, zoneless Angular application with a custom Angular
+Material theme. It supports phone calls, browser voice, typed chat and Linphone SMS.
+Transcripts, care actions, chart updates and outreach notes arrive over the existing
+SSE connection. Browser voice loads the Pipecat SDK on demand.
 
-## Test and Deploy
+```bash
+cd web
+npm ci
+npm run dev
+```
 
-Use the built-in continuous integration in GitLab.
+Open [http://localhost:8173/?mock=1](http://localhost:8173/?mock=1) to explore the
+scripted offline demo without a running API, microphone or phone. Without `?mock=1`,
+the dashboard connects to the real local API. `API_PORT` controls the API proxy target.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+The dashboard has three areas: outreach controls, a live conversation with a reply
+box, and the patient chart. The chart separates outreach progress from clinical
+context. On smaller screens, use the Conversation / Patient chart switch.
 
-***
+```bash
+npm run typecheck
+npm test -- --watch=false
+npm run build
+npx playwright install firefox
+npm run test:e2e
+```
 
-# Editing this README
+E2E tests run in Firefox on a separate server at port 8174. They cover patient
+selection, a complete replay, typed replies, microphone controls, mobile layout,
+REST/SSE ordering and call failures. The build writes to
+`web/dist/village-line/browser`; FastAPI serves that directory if it exists at startup.
+The former React source is preserved locally in git-ignored `web-react/`.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## Call logs
 
-## Suggestions for a good README
+Every call (Linphone, browser, or typed chat) gets its own transcript file in `logs/calls/`, named by start time, patient and channel, e.g. `2026-10-27_10-59-29_james-cole_linphone.log`. It holds a header (session, patient, channel), each timestamped Maya/Patient line, the chart writes (tool calls), how and when the call ended, and the post-call note. `CALL_LOG_DIR` moves it. The folder is git-ignored.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## What to say
 
-## Name
-Choose a self-explaining name for your project.
+- **James Cole** — “The van never showed.” Maya should hold tomorrow 10:00 Chair 9 and task social work for a ride.
+- **Rosa Alvarez** — “I felt dizzy.” She offers today’s 2:00 chair. If you say chest pain, she stops booking.
+- **DeShawn Reed** — “I just needed a day.” She respects the choice and still notifies the nurse.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## Why this use case
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Missing one dialysis treatment raises 30-day hospitalization risk about 41%. Clinics are expected to outreach within 30 minutes and resolve the same day. Village Line is that call, with the chart moving while you listen.

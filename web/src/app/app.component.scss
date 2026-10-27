@@ -1,0 +1,46 @@
+:host { display: block; }
+.topbar { height: 72px; display: flex; align-items: center; gap: 24px; padding: 0 36px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.83); backdrop-filter: blur(22px); position: sticky; top: 0; z-index: 20; }
+.brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 20px; letter-spacing: -.6px; white-space: nowrap; }
+.brand-mark { width: 34px; height: 34px; border-radius: 11px; background: var(--navy); display: grid; place-items: center; color: white; }
+.topbar-divider { height: 24px; width: 1px; background: var(--line); }
+.facility { color: var(--muted); font-size: 13px; }
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 22px; }
+.connection, .synthetic { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); }
+.synthetic { background: var(--surface); padding: 7px 11px; border-radius: 30px; }
+.synthetic app-icon { width: 15px; height: 15px; color: var(--success); }
+main { max-width: 1680px; margin: auto; padding: 34px 32px 16px; }
+.page-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+.context { color: var(--blue); font-size: 12px; font-weight: 650; margin: 0 0 9px; }
+h1 { font-size: clamp(26px, 2.5vw, 36px); font-weight: 650; letter-spacing: -1.25px; margin: 0 0 8px; line-height: 1.15; }
+.page-description { font-size: 13px; margin: 0; color: var(--muted); }
+.workspace-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.workspace-label app-icon { color: var(--blue); width: 16px; height: 16px; }
+.workspace-grid { display: grid; grid-template-columns: 292px minmax(0,1fr) 364px; gap: 20px; align-items: start; }
+.workspace-content { display: contents; }
+.mobile-switch { display: none; }
+.page-footer { display: flex; justify-content: space-between; gap: 12px; padding: 18px 2px 0; font-size: 11px; color: var(--muted); }
+@media(min-width: 1200px) {
+  .workspace-grid { height: max(650px, calc(100dvh - 263px)); }
+  app-call-panel, app-chart-panel, app-conversation { height: 100%; min-height: 0; }
+}
+@media(max-width: 1199px) {
+  .workspace-grid { grid-template-columns: 290px minmax(0,1fr); }
+  .workspace-content { display: flex; flex-direction: column; min-width: 0; gap: 16px; }
+  .mobile-switch { display: flex; align-self: center; }
+  .mobile-hidden { display: none; }
+  app-conversation { height: 740px; }
+  .workspace-label { display: none; }
+}
+@media(max-width: 720px) {
+  .topbar { height: 62px; padding: 0 16px; gap: 10px; }
+  .topbar-divider, .facility, .connection { display: none; }
+  .topbar-actions { gap: 4px; }
+  .brand { font-size: 18px; }
+  .synthetic { font-size: 10px; padding: 6px 8px; }
+  main { padding: 24px 14px 18px; }
+  .page-heading { margin-bottom: 22px; }
+  .page-description { max-width: 290px; line-height: 1.6; }
+  .workspace-grid { grid-template-columns: minmax(0,1fr); gap: 20px; }
+  .page-footer { flex-direction: column; }
+  app-conversation { height: 680px; }
+}

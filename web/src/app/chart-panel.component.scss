@@ -1,0 +1,46 @@
+:host { display: block; min-width: 0; }
+.chart { height: 100%; overflow-y: auto; scrollbar-width: thin; }
+.panel-heading > app-icon { color: var(--muted); width: 17px; }
+.patient-header { display: flex; align-items: center; gap: 13px; padding: 22px; }
+.patient-avatar { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 16px; background: #edf2f8; color: var(--navy); font-size: 16px; font-weight: 600; flex-shrink: 0; }
+.patient-header h3 { font-size: 19px; margin: 0 0 6px; font-weight: 600; letter-spacing: -.5px; }
+.patient-header p { margin: 0 0 4px; color: var(--muted); font-size: 10px; }
+.patient-header div > span { font-size: 10px; color: var(--muted); }
+.verified { margin-left: auto; color: var(--success); width: 17px; }
+.emergency { display: flex; align-items: center; gap: 9px; color: var(--danger); background: var(--danger-soft); padding: 14px 20px; font-size: 12px; line-height: 1.6; }
+.work-steps { display: flex; list-style: none; margin: 18px 0; padding: 0; }
+.work-steps li { display: flex; flex: 1; flex-direction: column; align-items: center; position: relative; gap: 8px; font-size: 9px; color: var(--muted); }
+.work-steps li:not(:last-child)::after { content: ''; position: absolute; height: 1px; background: var(--line); width: calc(100% - 33px); top: 13px; left: calc(50% + 17px); }
+.work-steps li > span { width: 26px; height: 26px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 50%; font-size: 10px; font-weight: 650; }
+.work-steps .current { color: var(--blue); font-weight: 650; }
+.work-steps .current > span { color: white; background: var(--blue); border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); }
+.work-steps .done > span { color: var(--success); background: var(--success-soft); border-color: #c2dfd0; }
+.work-steps app-icon { width: 13px; height: 13px; }
+.patient-quote { font-size: 12px; font-style: italic; line-height: 1.7; color: var(--muted); padding: 10px 12px; border-left: 2px solid var(--blue); background: var(--surface); border-radius: 0 8px 8px 0; }
+.confirmation { font-size: 11px; line-height: 1.6; color: var(--success); display: flex; align-items: center; gap: 6px; }
+.confirmation app-icon { width: 14px; }
+.missed-label { color: var(--warning) !important; }
+.makeup { display: flex; align-items: center; gap: 10px; padding: 14px 12px; margin-top: 12px; border-radius: 12px; background: var(--surface); }
+.makeup > app-icon { color: var(--blue); width: 19px; }
+.makeup strong { font-size: 11px; font-weight: 600; }
+.makeup p { margin: 4px 0 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+.makeup.booked { background: var(--success-soft); }
+.makeup.booked app-icon { color: var(--success); }
+.makeup app-icon:last-child { margin-left: auto; }
+.chairs-disclosure { margin-top: 14px; }
+.chairs-disclosure summary { cursor: pointer; color: var(--blue); font-size: 11px; font-weight: 600; }
+.chairs-disclosure summary span { font-size: 10px; background: var(--blue-soft); border-radius: 8px; margin-left: 6px; padding: 2px 6px; }
+.chair-list { padding: 0; list-style: none; margin: 12px 0 0; }
+.chair-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 10px; }
+.chair-list span { color: var(--muted); }
+.chair-list small { margin-left: auto; color: var(--blue); }
+.care-task { background: var(--surface); border-radius: 10px; padding: 12px; margin-top: 10px; border-left: 2px solid var(--blue); }
+.care-task.alert { border-color: var(--danger); }
+.care-task.warn { border-color: var(--warning); }
+.care-task > div { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.care-task strong { font-size: 11px; }
+.care-task small { font-size: 10px; color: var(--muted); display: block; margin-top: 6px; }
+.care-task p { font-size: 11px; line-height: 1.7; margin: 8px 0 0; }
+.screen-items { display: flex; flex-wrap: wrap; gap: 5px; }
+h4 { font-size: 11px; margin: 18px 0 10px; }
+.loading-chart { font-size: 13px; color: var(--muted); margin: 22px; }

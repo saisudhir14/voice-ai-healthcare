@@ -1,0 +1,97 @@
+<aside class="chart panel" aria-label="Patient chart">
+  <header class="panel-heading"><div><h2>Patient chart</h2><p>Context for a more personal conversation.</p></div><app-icon name="file" /></header>
+  @if (chart(); as chart) {
+    @let patient = chart.patient;
+    <div class="patient-header">
+      <span class="patient-avatar">{{ initials(patient) }}</span>
+      <div><h3>{{ displayName(patient) }}</h3><p>{{ patient.age ? patient.age + ' years' : '' }} · {{ languageName(patient.runtime?.language || patient.preferred_language) }} · {{ patient.modality || 'Dialysis' }}</p>
+        <span>{{ patient.mpi || patient.id }}</span></div>
+      @if (patient.runtime?.identity_verified) { <app-icon class="verified" name="shield" /> }
+    </div>
+    @if (patient.runtime?.emergency) {
+      <div class="emergency" role="alert"><app-icon name="alert" /> Emergency reported. Booking stopped. Nurse notified.</div>
+    }
+    <mat-tab-group animationDuration="220ms" [preserveContent]="true" class="chart-tabs">
+      <mat-tab label="Outreach">
+        <div class="chart-content">
+          <section class="chart-section">
+            <div class="section-title"><h3>Missed treatment worklist</h3><span>{{ chart.work.id }}</span></div>
+            <ol class="work-steps" [appFlash]="chart.work.status" aria-label="Worklist progress">
+              @for (step of steps; track step; let index = $index) {
+                <li [class.current]="chart.work.status === step" [class.done]="steps.indexOf(chart.work.status) > index"
+                  [attr.aria-current]="chart.work.status === step ? 'step' : null">
+                  <span>@if (steps.indexOf(chart.work.status) > index) { <app-icon name="check" /> } @else { {{ index + 1 }} }</span>
+                  {{ step === 'In Progress' ? 'In progress' : step }}
+                </li>
+              }
+            </ol>
+            <dl class="detail-list">
+              <div [appFlash]="chart.work.reason"><dt>Reason</dt><dd>{{ chart.work.reason }}</dd></div>
+              <div [appFlash]="chart.work.attempts"><dt>Outreach attempts</dt><dd>{{ chart.work.attempts }}</dd></div>
+              <div [appFlash]="chart.work.outcome"><dt>Outcome</dt><dd>{{ chart.work.outcome || 'Open' }}</dd></div>
+              @if (chart.work.linkedRun) { <div><dt>Linked run</dt><dd>{{ chart.work.linkedRun }}</dd></div> }
+              @if (chart.work.owner) { <div><dt>Owner</dt><dd>{{ chart.work.owner }}</dd></div> }
+              @if (chart.work.due) { <div><dt>Due</dt><dd>{{ chart.work.due }}</dd></div> }
+            </dl>
+            @if (chart.work.reasonDetail) { <p class="patient-quote" [appFlash]="chart.work.reasonDetail">“{{ chart.work.reasonDetail }}”</p> }
+            @if (chart.work.nextCall) { <p class="notice" [appFlash]="chart.work.nextCall">{{ chart.work.nextCall }}</p> }
+            @if (patient.runtime?.outcome_summary; as summary) { <p class="notice" [appFlash]="summary">{{ summary }}</p> }
+            @if (chart.confirmation) { <p class="confirmation" [appFlash]="chart.confirmation"><app-icon name="check" /> {{ chart.confirmation }}</p> }
+          </section>
+          <section class="chart-section">
+            <div class="section-title"><h3><app-icon name="calendar" /> Treatment schedule</h3></div>
+            <dl class="detail-list">
+              @if (patient.schedule; as schedule) {
+                <div><dt>Usual schedule</dt><dd>{{ schedule.pattern }}<span>{{ schedule.time }} · {{ schedule.chair }}</span></dd></div>
+                <div><dt>Prescription</dt><dd>{{ schedule.shift }} · {{ schedule.pod }}<span>{{ schedule.duration_hours }} hours</span></dd></div>
+              }
+              @if (patient.missed; as missed) {
+                <div><dt>Missed treatment</dt><dd>{{ missed.weekday || missed.date }} · {{ missed.time }}<span class="missed-label" [appFlash]="missed.status">{{ humanize(missed.status || 'Missed') }}</span></dd></div>
+              }
+            </dl>
+            <div class="makeup" [class.booked]="!!patient.runtime?.booked_slot" [appFlash]="patient.runtime?.booked_slot?.id">
+              <app-icon name="chair" /><div><strong>{{ patient.runtime?.booked_slot ? 'Makeup treatment held' : 'Makeup treatment' }}</strong>
+                <p>{{ slotLabel(patient.runtime?.booked_slot) || 'A new time, when they’re ready.' }}</p></div>
+              @if (patient.runtime?.booked_slot) { <app-icon name="check" /> }
+            </div>
+            @if (chart.chairs.length) {
+              <details class="chairs-disclosure">
+                <summary>ScheduleHub chairs <span>{{ chart.chairs.length }}</span></summary>
+                <ul class="chair-list">@for (chair of chart.chairs; track chair.id) {
+                  <li [class.booked]="chair.booked"><strong>{{ chair.chair }}</strong><span>{{ chair.date_label || chair.weekday }} · {{ chair.time }}</span>
+                    <small>{{ chair.booked ? 'Held' : chair.available === false ? 'Unavailable' : chair.pod || 'Open' }}</small></li>
+                }</ul>
+              </details>
+            }
+          </section>
+          <section class="chart-section">
+            <div class="section-title"><h3><app-icon name="car" /> Getting there</h3></div>
+            <dl class="detail-list">
+              <div><dt>Transportation</dt><dd>{{ patient.transportation?.type || 'Not recorded' }}</dd></div>
+              <div [appFlash]="chart.transport"><dt>Status</dt><dd>{{ chart.transport === 'msw_tasked' ? 'Social work arranging' : humanize(chart.transport) || 'Not recorded' }}</dd></div>
+            </dl>
+            @if (patient.transportation?.detail; as detail) { <p class="section-note">{{ detail }}</p> }
+          </section>
+          <section class="chart-section">
+            <div class="section-title"><h3><app-icon name="bell" /> Care team</h3><span>{{ patient.runtime?.escalations?.length || 0 }} tasks</span></div>
+            @for (task of patient.runtime?.escalations || []; track $index) {
+              <article [class]="'care-task ' + urgencyTone(task.urgency)" animate.enter="turn-enter">
+                <div><strong>{{ ownerLabel(task.owner) }}</strong><span [class]="'badge ' + urgencyTone(task.urgency)">{{ humanize(task.urgency || 'Routine') }}</span></div>
+                @if (task.name) { <small>{{ task.name }}</small> }
+                <p>{{ task.reason }}</p>
+              </article>
+            } @empty { <p class="section-note">No tasks yet. Follow-ups appear here as Maya routes them.</p> }
+            @if (chart.screen; as screen) {
+              <h4>Symptom screen</h4>
+              <div class="screen-items">@for (item of screen.items; track item.label) { <span class="badge" [class.warn]="item.positive" [class.ok]="!item.positive">{{ item.label }}: {{ item.value }}</span> }</div>
+              @if (screen.summary) { <p class="section-note">{{ screen.summary }}</p> }
+            }
+          </section>
+        </div>
+      </mat-tab>
+      <mat-tab label="Clinical context"><app-clinical-chart [patient]="patient" /></mat-tab>
+    </mat-tab-group>
+  } @else {
+    <p class="loading-chart">The chart will appear when the clinic loads.</p>
+  }
+</aside>

@@ -1,0 +1,94 @@
+<aside class="call-panel panel" aria-label="Outreach controls">
+  <div class="maya-stage" [class.active]="workspace.isActive()">
+    <div class="stage-top">
+      <span class="small-label">Your AI teammate</span>
+      <span class="status-pill" [class.ok]="workspace.isActive()">
+        <i class="status-dot" [class.connected]="workspace.isActive()"></i>
+        {{ workspace.session() ? elapsed() : 'Ready' }}
+      </span>
+    </div>
+    <app-voice-orb [mode]="mode()" />
+    <h2 aria-live="polite">{{ caption() }}</h2>
+    <p>{{ workspace.session() ? displayName(workspace.patient()) : 'A familiar voice. A thoughtful follow-through.' }}</p>
+    @if (workspace.session(); as session) {
+      <span class="channel-label">{{ channelNames[session.channel] || session.channel }}{{ session.direction === 'inbound' ? ' · Incoming' : '' }}</span>
+    }
+  </div>
+
+  @if (workspace.session(); as session) {
+    <div class="live-controls">
+      @if (workspace.patient()?.runtime?.emergency) {
+        <p class="notice alert" role="alert"><app-icon name="alert" /> Emergency flagged. Booking stopped, nurse notified.</p>
+      }
+      @if (session.status === 'ended') {
+        <button mat-flat-button class="full-button" (click)="workspace.restart()">Start another outreach <app-icon name="arrow" /></button>
+        <p class="help">The conversation and outreach note stay here until you start again.</p>
+      } @else {
+        <div class="live-actions">
+          <button mat-flat-button class="end-button" [disabled]="isEnding()" (click)="end()">
+            <app-icon name="phone" /> {{ isEnding() ? 'Ending…' : session.channel === 'chat' || session.channel === 'sms' ? 'End conversation' : 'End call' }}
+          </button>
+          @if (session.channel === 'browser') {
+            <button mat-icon-button [attr.aria-label]="workspace.state().micMuted ? 'Unmute microphone' : 'Mute microphone'"
+              [attr.aria-pressed]="workspace.state().micMuted" (click)="workspace.mute()"
+              [matTooltip]="workspace.state().micMuted ? 'Unmute' : 'Mute'">
+              <app-icon [name]="workspace.state().micMuted ? 'muted' : 'mic'" />
+            </button>
+          }
+        </div>
+        <p class="help">Follow along in the conversation. You can also type a reply there at any time.</p>
+      }
+      <div class="outreach-focus">
+        <app-icon name="shield" /><div><strong>Care, with context</strong><p>Maya verifies identity before discussing treatment and routes clinical concerns to the care team.</p></div>
+      </div>
+    </div>
+  } @else {
+    <div class="patient-section">
+      <div class="section-label"><h3>Who are we reaching?</h3><span>{{ workspace.state().patients.length }} patients</span></div>
+      <div class="patient-list" aria-label="Select a patient">
+        @for (patient of workspace.state().patients; track patient.id) {
+          <button class="patient-option" [class.selected]="patient.id === workspace.state().selectedId"
+            [attr.aria-pressed]="patient.id === workspace.state().selectedId" (click)="workspace.select(patient.id)">
+            <span class="avatar">{{ initials(patient) }}</span>
+            <span class="patient-text"><strong>{{ displayName(patient) }}</strong><span>{{ patient.persona || languageName(patient.preferred_language) }}</span></span>
+            @if (patient.id === workspace.state().selectedId) { <app-icon name="check" /> }
+          </button>
+        } @empty {
+          <p class="help" role="status">{{ workspace.state().loaded ? workspace.state().loadError || 'No patients available.' : 'Loading the clinic…' }}</p>
+          @if (workspace.state().loadError) { <a mat-button href="?mock=1">Open offline demo</a> }
+        }
+      </div>
+    </div>
+    <div class="start-controls">
+      <button mat-flat-button class="full-button primary-call" [disabled]="!workspace.canStart() || !workspace.state().sip?.registered"
+        (click)="workspace.start('linphone')"><app-icon name="phone" /> Call my phone <app-icon name="arrow" /></button>
+      <div class="secondary-actions">
+        <button mat-stroked-button [disabled]="!workspace.canStart() || (!isSecure && !workspace.state().mock)" (click)="workspace.start('browser')">
+          <app-icon name="mic" /> Browser voice</button>
+        <button mat-stroked-button [disabled]="!workspace.canStart()" (click)="workspace.start('chat')"><app-icon name="keyboard" /> Chat</button>
+      </div>
+      <button mat-button class="sms-button" [disabled]="!workspace.canStart() || !workspace.state().sip?.registered" (click)="workspace.start('sms')">
+        <app-icon name="message" /> Send a text to my phone</button>
+      @if (!isSecure && !workspace.state().mock) { <p class="help">Browser voice needs localhost or HTTPS. Use chat or a paired phone here.</p> }
+    </div>
+  }
+
+  <div class="phone-status">
+    @if (workspace.state().sip?.registered) {
+      <div class="phone-connected"><span class="phone-icon"><app-icon name="phone" /></span>
+        <div><strong>Phone connected</strong><p>Linphone · {{ workspace.state().sip?.user || 'Ready to call' }}</p></div>
+        <i class="status-dot connected"></i>
+      </div>
+    } @else {
+      <details>
+        <summary><app-icon name="phone" /> {{ workspace.state().sip ? 'Pair your phone' : 'Phone line unavailable' }}</summary>
+        <p class="help">Open Linphone on the same Wi-Fi. Choose a third-party SIP account, any username and password, and UDP transport.</p>
+        @if (domain()) {
+          <p class="domain">{{ domain() }}</p>
+          <button mat-button (click)="copyDomain()">Copy domain</button>
+        }
+        <p class="help">Calls and SMS become available when your phone registers. You can use browser voice or chat meanwhile.</p>
+      </details>
+    }
+  </div>
+</aside>
